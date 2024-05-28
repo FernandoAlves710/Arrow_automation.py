@@ -8,3 +8,4 @@ matplotlib
 plotly
 yfinance
 pyPDF2
+pyMuPDF

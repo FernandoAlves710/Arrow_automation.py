@@ -1,10 +1,11 @@
 import streamlit as st
 import PyPDF2
 import pandas as pd
+from io import BytesIO
 
 def extrair_texto(pdf_file):
     text = ""
-    with open(pdf_file, "rb") as f:
+    with pdf_file as f:
         reader = PyPDF2.PdfFileReader(f)
         num_pages = reader.numPages
         for page_num in range(num_pages):

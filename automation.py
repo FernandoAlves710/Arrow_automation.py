@@ -1,45 +1,41 @@
 import streamlit as st
-import PyPDF2
+import fitz  # PyMuPDF
 import pandas as pd
 from io import BytesIO
 
 def extrair_texto(pdf_file):
     text = ""
-    with pdf_file as f:
-        reader = PyPDF2.PdfFileReader(f)
-        num_pages = reader.numPages
-        for page_num in range(num_pages):
-            page = reader.getPage(page_num)
-            text += page.extractText()
+    with pdf_file:
+        pdf_document = fitz.open(BytesIO(pdf_file.read()))
+        for page_num in range(pdf_document.page_count):
+            page = pdf_document.load_page(page_num)
+            text += page.get_text()
     return text
 
 def extrair_informacoes(texto, pagina):
+    # Simulação de dados para demonstração
     if pagina == 1:
-        # Simulação de dados do Balanço Patrimonial
         data = {
             "Item": ["Ativos", "Passivos"],
             "Valor": ["100000", "50000"]
         }
     elif pagina == 2:
-        # Simulação de dados da Demonstração do Resultado do Exercício
         data = {
             "Item": ["Receita", "Custos", "Despesas"],
             "Valor": ["80000", "30000", "20000"]
         }
     elif pagina == 3:
-        # Simulação de dados do Fluxo de Caixa
         data = {
             "Item": ["Entradas", "Saídas"],
             "Valor": ["60000", "40000"]
         }
     elif pagina == 4:
-        # Simulação de dados da Nota Explicativa de Custos e Despesas
         data = {
             "Item": ["Custos Extras", "Despesas Extras"],
             "Valor": ["5000", "3000"]
         }
     else:
-        st.error("Página inválida!")
+        st.error("Página inválida! Por favor, selecione uma página válida.")
         return None
     
     return pd.DataFrame(data)

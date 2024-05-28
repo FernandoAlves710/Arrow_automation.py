@@ -14,32 +14,63 @@ def extrair_texto(pdf_file):
 
 def extrair_informacoes(texto, pagina):
     if pagina == 1:
-        # Extrair informações do Balanço Patrimonial
-        # Aqui você precisa implementar a lógica para encontrar e extrair as informações desejadas
-        pass
+        # Simulação de dados do Balanço Patrimonial
+        data = {
+            "Item": ["Ativos", "Passivos"],
+            "Valor": ["100000", "50000"]
+        }
     elif pagina == 2:
-        # Extrair informações da Demonstração do Resultado do Exercício
-        # Implemente a lógica similar ao anterior
-        pass
+        # Simulação de dados da Demonstração do Resultado do Exercício
+        data = {
+            "Item": ["Receita", "Custos", "Despesas"],
+            "Valor": ["80000", "30000", "20000"]
+        }
     elif pagina == 3:
-        # Extrair informações do Fluxo de Caixa
-        # Implemente a lógica similar ao anterior
-        pass
+        # Simulação de dados do Fluxo de Caixa
+        data = {
+            "Item": ["Entradas", "Saídas"],
+            "Valor": ["60000", "40000"]
+        }
     elif pagina == 4:
-        # Extrair informações da Nota Explicativa de Custos e Despesas
-        # Implemente a lógica similar ao anterior
-        pass
+        # Simulação de dados da Nota Explicativa de Custos e Despesas
+        data = {
+            "Item": ["Custos Extras", "Despesas Extras"],
+            "Valor": ["5000", "3000"]
+        }
     else:
         st.error("Página inválida!")
+        return None
+    
+    return pd.DataFrame(data)
 
 def main():
     st.title("Extrator de Dados Financeiros")
 
     pdf_file = st.file_uploader("Selecione o arquivo PDF", type="pdf")
     if pdf_file is not None:
-        pagina = st.number_input("Digite o número da página (1, 2, 3, 4)", min_value=1, max_value=4, value=1)
+        st.write("1. Pagina do BP:")
         texto = extrair_texto(pdf_file)
-        extrair_informacoes(texto, pagina)
+        tabela_bp = extrair_informacoes(texto, 1)
+        if tabela_bp is not None:
+            st.table(tabela_bp)
+
+        st.write("2. Pagina da DRE:")
+        texto = extrair_texto(pdf_file)
+        tabela_dre = extrair_informacoes(texto, 2)
+        if tabela_dre is not None:
+            st.table(tabela_dre)
+
+        st.write("3. Pagina do FC:")
+        texto = extrair_texto(pdf_file)
+        tabela_fc = extrair_informacoes(texto, 3)
+        if tabela_fc is not None:
+            st.table(tabela_fc)
+
+        st.write("4. Pagina da NECD:")
+        texto = extrair_texto(pdf_file)
+        tabela_necd = extrair_informacoes(texto, 4)
+        if tabela_necd is not None:
+            st.table(tabela_necd)
 
 if __name__ == "__main__":
     main()
